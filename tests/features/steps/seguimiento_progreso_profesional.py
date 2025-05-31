@@ -2,6 +2,7 @@ from behave import *
 
 from src.Estudiante import  Estudiante
 from src.Perfil import Perfil
+from src.Carrera import Carrera
 
 use_step_matcher("re")
 
@@ -15,16 +16,11 @@ def step_impl(context):
     context.estudiante.agregar_perfil(context.perfil)
     assert len(context.estudiante.get_historial_perfiles()) > 0, "El estudiante no tiene perfiles registrados en su historial"
 
-#
-# @step("la carrera de software tiene el siguiente (?P<objetivo>.+):")
-# def step_impl(context, objetivo):
-#     """
-#     :type context: behave.runner.Context
-#     :type objetivo: str
-#     """
-#     raise NotImplementedError(u'STEP: Y la carrera de software tiene el siguiente <objetivo>:')
-#
-#
+@step("la carrera de software tiene el siguiente (?P<objetivo>.+):")
+def step_impl(context, objetivo):
+    context.carrera = Carrera(nombre="Ingeniería de Software")
+    context.carrera.agregar_objetivo(objetivo)
+    assert objetivo in context.carrera.get_objetivos(), f"El objetivo '{objetivo}' no se ha agregado correctamente a la carrera de software"
 # @step("consulte el progreso de su último perfil")
 # def step_impl(context):
 #     """
