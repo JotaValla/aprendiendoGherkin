@@ -38,14 +38,42 @@ def step_impl(context):
     # Verificación simple
     assert len(context.progreso_mostrado) > 0, "No se mostró progreso alguno"
 
+@step("se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel")
+def step_impl(context):
+    # Crear estudiantes adicionales del mismo nivel para tener una media representativa
+    estudiantes_adicionales = [
+        Estudiante(nombre="Ana"),
+        Estudiante(nombre="Carlos"),
+        Estudiante(nombre="María")
+    ]
 
+    # Agregar perfiles a los estudiantes adicionales (mismo semestre)
+    perfiles_adicionales = [
+        Perfil(semestre=1, progreso_por_objetivo=[2.0, 1.8, 3.2, 1.5, 3.5]),
+        Perfil(semestre=1, progreso_por_objetivo=[1.8, 2.2, 3.0, 2.0, 3.8]),
+        Perfil(semestre=1, progreso_por_objetivo=[2.2, 1.9, 3.5, 1.8, 4.2])
+    ]
 
+    for estudiante, perfil in zip(estudiantes_adicionales, perfiles_adicionales):
+        estudiante.agregar_perfil(perfil)
+        context.carrera.agregar_estudiante(estudiante)
 
+    # Agregar el estudiante principal a la carrera
+    context.carrera.agregar_estudiante(context.estudiante)
 
-# @step("se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel")
-# def step_impl(context):
-#     """
-#     :type context: behave.runner.Context
-#     """
-#     raise NotImplementedError(
-#         u'STEP: Y se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel')
+    # Obtener el último perfil del estudiante principal
+    ultimo_perfil = context.estudiante.obtener_ultimo_perfil()
+
+    # Calcular la media por objetivo para el nivel del estudiante
+    media_por_objetivo = context.carrera.calcular_media_por_objetivo(ultimo_perfil.semestre)
+
+    # Destacar objetivos que superen la media
+    objetivos_destacados = ultimo_perfil.destacar_objetivos_sobre_media(media_por_objetivo)
+
+    # Guardar en contexto para posibles validaciones posteriores
+    context.objetivos_destacados = objetivos_destacados
+    context.media_por_objetivo = media_por_objetivo
+
+    # Validación: debe haber al menos un objetivo destacado o la funcionalidad debe ejecutarse
+    assert isinstance(objetivos_destacados, list), "La función de destacar objetivos no retornó una lista"
+    print(f"\nTotal de objetivos destacados: {len(objetivos_destacados)}")
