@@ -19,10 +19,10 @@ class Perfil:
 
     def __init__(self, semestre: int, progreso_por_objetivo: list):
         self.semestre: int = semestre
-        # if len(progreso_por_objetivo) != len(Perfil.objetivos_definidos):
-        #     raise ValueError(
-        #         f"La lista progreso_por_objetivo debe tener {len(Perfil.objetivos_definidos)} elementos, "
-        #         f"pero tiene {len(progreso_por_objetivo)}."
-        #     )
         self.progreso: dict[Objetivo, int] = dict(zip(Perfil.objetivos_definidos, progreso_por_objetivo))
 
+    def mostrar_progreso(self):
+        """Muestra el progreso ya definido para cada objetivo"""
+        print(f"Progreso del semestre {self.semestre}:")
+        for objetivo, valor_progreso in self.progreso.items():
+            print(f"- {objetivo.value}: {valor_progreso}%")

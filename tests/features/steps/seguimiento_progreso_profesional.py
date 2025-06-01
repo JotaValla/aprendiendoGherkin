@@ -21,22 +21,27 @@ def step_impl(context, objetivo):
     context.carrera = Carrera(nombre="Ingeniería de Software")
     context.carrera.agregar_objetivo(objetivo)
     assert objetivo in context.carrera.get_objetivos(), f"El objetivo '{objetivo}' no se ha agregado correctamente a la carrera de software"
-# @step("consulte el progreso de su último perfil")
-# def step_impl(context):
-#     """
-#     :type context: behave.runner.Context
-#     """
-#     raise NotImplementedError(u'STEP: Cuando consulte el progreso de su último perfil')
-#
-#
-# @step("se mostrará un porcentaje de progreso de cada objetivo")
-# def step_impl(context):
-#     """
-#     :type context: behave.runner.Context
-#     """
-#     raise NotImplementedError(u'STEP: Entonces se mostrará un porcentaje de progreso de cada objetivo')
-#
-#
+
+@step("consulte el progreso de su último perfil")
+def step_impl(context):
+     estudiante_actual = context.estudiante
+     ultimo_perfil = estudiante_actual.obtener_ultimo_perfil()
+     assert ultimo_perfil is not None, "No se encontró el último perfil del estudiante."
+     context.progreso_del_ultimo_perfil = ultimo_perfil.progreso
+
+@step("se mostrará un porcentaje de progreso de cada objetivo")
+def step_impl(context):
+    ultimo_perfil = context.estudiante.obtener_ultimo_perfil()
+    ultimo_perfil.mostrar_progreso()
+    # Guardamos el progreso en el contexto para validaciones posteriores
+    context.progreso_mostrado = ultimo_perfil.progreso
+    # Verificación simple
+    assert len(context.progreso_mostrado) > 0, "No se mostró progreso alguno"
+
+
+
+
+
 # @step("se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel")
 # def step_impl(context):
 #     """

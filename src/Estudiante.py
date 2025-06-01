@@ -1,4 +1,4 @@
-from src.Perfil import Perfil # Asumiendo que Perfil está en src/Perfil.py
+from src.Perfil import Perfil, Objetivo  # Asumiendo que Perfil está en src/Perfil.py
 
 class Estudiante:
     def __init__(self, nombre:str):
