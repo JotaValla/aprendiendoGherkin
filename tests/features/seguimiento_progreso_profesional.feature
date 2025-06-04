@@ -16,7 +16,7 @@ Característica: : Seguimiento de autoevaluación de progreso formativo
 
     Escenario: Seguimiento sin falencias
     Dado que el estudiante tiene registrado al menos un perfil en su historial
-    Y la carrera de software tiene los siguientes :
+    Y la carrera de software tiene los siguientes objetivos:
       | objetivo|
       | Verificación, validación y aseguramiento de la calidad del Software|
       | Administración de proyectos de Software.|
@@ -26,7 +26,12 @@ Característica: : Seguimiento de autoevaluación de progreso formativo
     # la carrera podria ser un ejemplo
     Cuando consulte el progreso de su último perfil
     Entonces se mostrará un porcentaje de progreso de cada objetivo
-    Y se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel
+    Y se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel:
+      | nombre  | semestre | progreso materia 1 | progreso materia 2 | progreso materia 3 | progreso materia 4 | progreso materia 5 |
+      | Ana     | 1        | 2.0                | 1.8                | 3.2                | 1.5                | 3.5                |
+      | Carlos  | 1        | 1.8                | 2.2                | 3.0                | 2.0                | 3.8                |
+      | Maria   | 1        | 2.2                | 1.9                | 3.5                | 1.8                | 4.2                |
+
 
 #      | Verificación, validación y aseguramiento de la calidad del Software; Administración de proyectos de Software; Investigación aplicada en proyectos de conceptualización, desarrollo, innovación y transferencia de Software; Ingeniería de Software para el desarrollo de Sistemas de Información y Sistemas Inteligentes; Emprendimiento de empresas de investigación, innovación, desarrollo y comercialización de Software|
 

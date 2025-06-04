@@ -43,23 +43,22 @@ def step_impl(context):
     # Verificación simple
     assert len(context.progreso_mostrado) > 0, "No se mostró progreso alguno"
 
-@step("se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel")
+@step("se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel:")
 def step_impl(context):
-    # Crear estudiantes adicionales del mismo nivel para tener una media representativa
-    estudiantes_adicionales = [
-        Estudiante(nombre="Ana"),
-        Estudiante(nombre="Carlos"),
-        Estudiante(nombre="María")
-    ]
+    # Crear estudiantes adicionales desde tabla
+    for row in context.table:
+        nombre = row['nombre']
+        semestre = int(row['semestre'])
 
-    # Agregar perfiles a los estudiantes adicionales (mismo semestre)
-    perfiles_adicionales = [
-        Perfil(semestre=1, progreso_por_objetivo=[2.0, 1.8, 3.2, 1.5, 3.5]),
-        Perfil(semestre=1, progreso_por_objetivo=[1.8, 2.2, 3.0, 2.0, 3.8]),
-        Perfil(semestre=1, progreso_por_objetivo=[2.2, 1.9, 3.5, 1.8, 4.2])
-    ]
+        # Extraer progresos desde columnas tipo 'progreso materia N'
+        progreso = [
+            float(row[col])
+            for col in row.headings
+            if col.lower().startswith("progreso materia")
+        ]
 
-    for estudiante, perfil in zip(estudiantes_adicionales, perfiles_adicionales):
+        estudiante = Estudiante(nombre=nombre)
+        perfil = Perfil(semestre=semestre, progreso_por_objetivo=progreso)
         estudiante.agregar_perfil(perfil)
         context.carrera.agregar_estudiante(estudiante)
 
@@ -79,6 +78,6 @@ def step_impl(context):
     context.objetivos_destacados = objetivos_destacados
     context.media_por_objetivo = media_por_objetivo
 
-    # Validación: debe haber al menos un objetivo destacado o la funcionalidad debe ejecutarse
+    # Validación
     assert isinstance(objetivos_destacados, list), "La función de destacar objetivos no retornó una lista"
     print(f"\nTotal de objetivos destacados: {len(objetivos_destacados)}")
