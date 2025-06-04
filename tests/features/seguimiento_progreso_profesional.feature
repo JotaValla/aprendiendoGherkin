@@ -14,20 +14,19 @@ Característica: : Seguimiento de autoevaluación de progreso formativo
 
 #    Y el umbral de aceptación minimo es de 70%
 
-  Esquema del escenario: Seguimiento sin falencias
+    Escenario: Seguimiento sin falencias
     Dado que el estudiante tiene registrado al menos un perfil en su historial
-    Y la carrera de software tiene el siguiente <objetivo>:
-    # la carrera podria ser un ejemplo
-    Cuando consulte el progreso de su último perfil
-    Entonces se mostrará un porcentaje de progreso de cada objetivo
-    Y se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel
-    Ejemplos:
-      | objetivo                      |
+    Y la carrera de software tiene los siguientes :
+      | objetivo|
       | Verificación, validación y aseguramiento de la calidad del Software|
       | Administración de proyectos de Software.|
       | Investigación aplicada en proyectos de conceptualización, desarrollo, innovación y transferencia de Software.|
       | Ingeniería de Software para el desarrollo de Sistemas de Información y Sistemas Inteligentes.|
       | Emprendimiento de empresas de investigación, innovación, desarrollo y comercialización de Software.|
+    # la carrera podria ser un ejemplo
+    Cuando consulte el progreso de su último perfil
+    Entonces se mostrará un porcentaje de progreso de cada objetivo
+    Y se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel
 
 #      | Verificación, validación y aseguramiento de la calidad del Software; Administración de proyectos de Software; Investigación aplicada en proyectos de conceptualización, desarrollo, innovación y transferencia de Software; Ingeniería de Software para el desarrollo de Sistemas de Información y Sistemas Inteligentes; Emprendimiento de empresas de investigación, innovación, desarrollo y comercialización de Software|
 
