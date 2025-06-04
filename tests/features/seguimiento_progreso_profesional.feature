@@ -7,6 +7,8 @@ Característica: : Seguimiento de autoevaluación de progreso formativo
 
   Escenario: Seguimiento sin falencias
     Dado que el estudiante tiene registrado al menos un perfil en su historial
+      | nombre | semestre | progreso objetivo 1 | progreso objetivo 2 | progreso objetivo 3 | progreso objetivo 4 | progreso objetivo 5 |
+      | Pepito | 1        | .52                 | .20                 | .62                 | .15                 | .35                 |
     Y la carrera de software tiene los siguientes objetivos
       | objetivo                                                                                                      |
       | Verificación, validación y aseguramiento de la calidad del Software                                           |

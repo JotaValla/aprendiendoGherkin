@@ -8,13 +8,24 @@ use_step_matcher("re")
 
 @step("que el estudiante tiene registrado al menos un perfil en su historial")
 def step_impl(context):
-    context.estudiante = Estudiante(nombre = "Pepito")
+
+    row = context.table[0]
+    nombre_estudiante = row["nombre"]
+    semestre = int(row["semestre"])
+    progreso_keys = sorted([h for h in row.headings if h.lower().startswith("progreso objetivo")])
+    progreso_objetivos = [float(row[key]) for key in progreso_keys]
+    context.estudiante = Estudiante(nombre=nombre_estudiante)
     context.perfil = Perfil(
-        semestre = 1,
-        progreso_por_objetivo = [0.5, 0, 0, 0, 0.1]
+        semestre=semestre,
+        progreso_por_objetivo=progreso_objetivos
     )
     context.estudiante.agregar_perfil(context.perfil)
-    assert len(context.estudiante.get_historial_perfiles()) > 0, "El estudiante no tiene perfiles registrados en su historial"
+
+    assert context.estudiante.obtener_ultimo_perfil() is context.perfil, \
+        "El perfil recién creado no es el último perfil registrado para el estudiante."
+
+    assert len(context.estudiante.get_historial_perfiles()) >= 1, \
+        "El estudiante no tiene perfiles registrados en su historial"
 
 @step("la carrera de software tiene los siguientes objetivos")
 def step_impl(context):
@@ -68,11 +79,12 @@ def step_impl(context):
     media_por_objetivo = context.carrera.calcular_media_por_objetivo(ultimo_perfil.semestre)
 
     # Destacar objetivos que superen la media
-    objetivos_destacados = ultimo_perfil.destacar_objetivos_sobre_media(media_por_objetivo)
+    objetivos_destacados, reporte = ultimo_perfil.destacar_objetivos_sobre_media(media_por_objetivo)
 
     # Guardar en contexto para posibles validaciones posteriores
     context.objetivos_destacados = objetivos_destacados
     context.media_por_objetivo = media_por_objetivo
+    context.reporte_destacados = reporte
 
     # Validación
     assert isinstance(objetivos_destacados, list), "La función de destacar objetivos no retornó una lista"
