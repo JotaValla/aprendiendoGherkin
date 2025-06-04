@@ -11,12 +11,12 @@ def step_impl(context):
     context.estudiante = Estudiante(nombre = "Pepito")
     context.perfil = Perfil(
         semestre = 1,
-        progreso_por_objetivo = [1.5, 2.0, 3.75, 0.99, 4.0]
+        progreso_por_objetivo = [0.5, 0, 0, 0, 0.1]
     )
     context.estudiante.agregar_perfil(context.perfil)
     assert len(context.estudiante.get_historial_perfiles()) > 0, "El estudiante no tiene perfiles registrados en su historial"
 
-@step("la carrera de software tiene los siguientes objetivos:")
+@step("la carrera de software tiene los siguientes objetivos")
 def step_impl(context):
     context.carrera = Carrera(nombre="Ingeniería de Software")
 
@@ -38,23 +38,19 @@ def step_impl(context):
 def step_impl(context):
     ultimo_perfil = context.estudiante.obtener_ultimo_perfil()
     ultimo_perfil.mostrar_progreso()
-    # Guardamos el progreso en el contexto para validaciones posteriores
     context.progreso_mostrado = ultimo_perfil.progreso
-    # Verificación simple
     assert len(context.progreso_mostrado) > 0, "No se mostró progreso alguno"
 
-@step("se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel:")
+@step("se destacarán los que superen la media de progreso de cada objetivo de los demás estudiantes del mismo nivel")
 def step_impl(context):
-    # Crear estudiantes adicionales desde tabla
     for row in context.table:
         nombre = row['nombre']
         semestre = int(row['semestre'])
 
-        # Extraer progresos desde columnas tipo 'progreso materia N'
         progreso = [
             float(row[col])
             for col in row.headings
-            if col.lower().startswith("progreso materia")
+            if col.lower().startswith("progreso objetivo")
         ]
 
         estudiante = Estudiante(nombre=nombre)
@@ -80,4 +76,3 @@ def step_impl(context):
 
     # Validación
     assert isinstance(objetivos_destacados, list), "La función de destacar objetivos no retornó una lista"
-    print(f"\nTotal de objetivos destacados: {len(objetivos_destacados)}")
